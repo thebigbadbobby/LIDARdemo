@@ -6,5 +6,7 @@ live feed and picture capabilities
 4. fix paths for your machine.(Python2 or python3 paths may not work) Files moved back one directory use python 2.
 5. 
 a. run "expandpicture.py directory" to take a single picture with all data going to directory - includes .ply, depth, and color.
+
 b. run "streamvideo.py"to bring up the live color video feed."
+
 c. run "streamdepth.py" to process depth data in real time (in development).

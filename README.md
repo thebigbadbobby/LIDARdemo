@@ -9,4 +9,4 @@ a. run "expandpicture.py directory" to take a single picture with all data going
 
 b. run "streamvideo.py"to bring up the live color video feed."
 
-c. run "streamdepth.py" to process depth data in real time (in development).
+c. run "streamdepth.py" to process depth data in real time (in development). (working, but not formatted)

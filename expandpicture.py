@@ -1,3 +1,4 @@
+from time import time
 # import cv2
 import numpy as np
 # import open3d as o3d
@@ -8,6 +9,7 @@ import json
 import cv2
 import os
 import sys
+import subprocess
 # file_name="../../../../Data/Datasets/nuspace/sweeps/LIDAR_TOP/n008-2018-08-01-15-16-36-0400__LIDAR_TOP__1533151603597909.pcd.bin"
 # file_ply="C:/Users/EavnJeong/Downloads/archive/ModelNet40_PLY/person/train/person_0011.ply"
 file_ply="./cloud.ply"
@@ -50,19 +52,39 @@ def remove_low_intensity(points,thresh: float) -> None:
         low_inten = np.logical_not(x_filt)
         return points[low_inten, :]
 
-os.system('c:/Python27/python.exe ../l515picture.py"')
-points=extract_from_ply_bin(file_ply)
-np.save("cloud.npy",points)
-depth=np.load(file_depth)
-color=np.load(file_color)
-# print(depth)
-# print(color)
-clrimg=Image.fromarray(color)
-clrimg.save("color.png")
-depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth, alpha=0.03), cv2.COLORMAP_JET)
-cv2.imwrite("depthgreyscale.png",depth)
-cv2.imwrite("depth.png",depth_colormap)
-os.system('mkdir '+ sys.argv[1])
-os.system('move cloud.ply '+ sys.argv[1])
-os.system('move *.png '+ sys.argv[1])
-os.system('move *.npy '+ sys.argv[1])
+cmd=['c:/Python27/python.exe','../l515video.py']
+process = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+print("simultaneous")
+x=input()
+print("terminate started")
+process.terminate()
+print("terminate ended")
+idx=0
+while True:
+        try:
+                # points=extract_from_ply_bin(file_ply)
+                # np.save("cloud.npy",points)
+                depth=np.load(f"depth{idx}.npy")
+                color=np.load(f"depth{idx}.npy")
+                # print(depth)
+                # print(color)
+                cv2.imwrite("./" + sys.argv[1] + f"/color_images/color{idx}.png",color)
+                # clrimg=Image.fromarray(color)
+                # clrimg.save("./" + sys.argv[1] + f"/color_images/color{idx}.png")
+                depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth, alpha=0.03), cv2.COLORMAP_JET)
+                print(idx)
+                
+                cv2.imwrite("./" + sys.argv[1] + f"/depth_images/depthgreyscale{idx}.png",depth)
+                cv2.imwrite("./" + sys.argv[1] + f"/depth_images/depth{idx}.png",depth_colormap)
+                # os.system('mkdir '+ sys.argv[1])
+                # os.system('move cloud.ply '+ sys.argv[1])
+                # os.system('move color*.png '+ sys.argv[1] + "/color_images/")
+                # os.system('move depth*.png '+ sys.argv[1] + "/depth_images/")
+                #        os.system('move *.png '+ sys.argv[1] + "/color_images/")
+                # os.system('del *.npy ')
+                idx+=1
+        except:
+                print("ekans")
+                os.system("del *.npy /Q")
+                break
+
